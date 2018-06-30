@@ -37,57 +37,53 @@ namespace Ndc.Library.EncryptDecrypt
         /// <summary> 
         /// Decrypt text by key with initialization vector 
         /// </summary> 
-        /// <param name="value">encrypted text</param> 
-        /// <param name="key"> string key</param> 
-        /// <param name="iv">initialization vector</param> 
-        /// <returns>encrypted text</returns> 
+        /// <param name="value">Encrypted text</param> 
+        /// <param name="key">Key string</param> 
+        /// <param name="iv">Initialization vector</param> 
+        /// <returns>Plain text</returns> 
         public string Decrypt(string value, string key, string iv)
         {
-            string decrptValue = string.Empty;
-            if (!string.IsNullOrEmpty(value))
+            var decrptValue = string.Empty;
+            if (string.IsNullOrEmpty(value)) return decrptValue;
+            MemoryStream ms = null;
+            CryptoStream cs = null;
+            value = value.Replace(" ", "+");
+            try
             {
-                MemoryStream ms = null;
-                CryptoStream cs = null;
-                value = value.Replace(" ", "+");
-                byte[] inputByteArray = new byte[value.Length];
-                try
+                if (!string.IsNullOrEmpty(key))
                 {
-                    if (!string.IsNullOrEmpty(key))
+                    _keyByte = Encoding.UTF8.GetBytes
+                        (key.Substring(0, 8));
+                    if (!string.IsNullOrEmpty(iv))
                     {
-                        _keyByte = Encoding.UTF8.GetBytes
-                                (key.Substring(0, 8));
-                        if (!string.IsNullOrEmpty(iv))
-                        {
-                            _ivByte = Encoding.UTF8.GetBytes
-                                (iv.Substring(0, 8));
-                        }
+                        _ivByte = Encoding.UTF8.GetBytes
+                            (iv.Substring(0, 8));
                     }
-                    else
-                    {
-                        _keyByte = Encoding.UTF8.GetBytes(Key);
-                    }
-                    using (DESCryptoServiceProvider des =
-                            new DESCryptoServiceProvider())
-                    {
-                        inputByteArray = Convert.FromBase64String(value);
-                        ms = new MemoryStream();
-                        cs = new CryptoStream(ms, des.CreateDecryptor
+                }
+                else
+                {
+                    _keyByte = Encoding.UTF8.GetBytes(Key);
+                }
+                using (var des = new DESCryptoServiceProvider())
+                {
+                    var inputByteArray = Convert.FromBase64String(value);
+                    ms = new MemoryStream();
+                    cs = new CryptoStream(ms, des.CreateDecryptor
                         (_keyByte, _ivByte), CryptoStreamMode.Write);
-                        cs.Write(inputByteArray, 0, inputByteArray.Length);
-                        cs.FlushFinalBlock();
-                        Encoding encoding = Encoding.UTF8;
-                        decrptValue = encoding.GetString(ms.ToArray());
-                    }
+                    cs.Write(inputByteArray, 0, inputByteArray.Length);
+                    cs.FlushFinalBlock();
+                    var encoding = Encoding.UTF8;
+                    decrptValue = encoding.GetString(ms.ToArray());
                 }
-                catch
-                {
-                    //TODO: write log 
-                }
-                finally
-                {
-                    cs.Dispose();
-                    ms.Dispose();
-                }
+            }
+            catch
+            {
+                //TODO: write log 
+            }
+            finally
+            {
+                cs?.Dispose();
+                ms?.Dispose();
             }
             return decrptValue;
         }
