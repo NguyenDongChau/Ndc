@@ -9,7 +9,7 @@ namespace Ndc.Library.EncryptDecrypt
 {
     public class Md5Encryption
     {
-        public string EncryptMd5(string plainText)
+        public static string EncryptMd5(string plainText)
         {
             var strMd5 = string.Empty;
 
@@ -32,7 +32,7 @@ namespace Ndc.Library.EncryptDecrypt
             return strBuilder.ToString();
         }
 
-        public bool CompareMd5(string plainText, string strMd5)
+        public static bool CompareMd5(string plainText, string strMd5)
         {
             var encrypted = EncryptMd5(plainText);
             return encrypted.Equals(strMd5);
