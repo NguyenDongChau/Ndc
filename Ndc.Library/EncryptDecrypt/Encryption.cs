@@ -7,18 +7,24 @@ namespace Ndc.Library.EncryptDecrypt
 {
     public class Encryption
     {
-        private byte[] _keyByte = { };
+        private static byte[] _keyByte = { };
         //Default Key
-        private static readonly string Key = "Pass@123#"; 
+        private static string Key; 
         //Default initial vector
-        private byte[] _ivByte = { 0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78 };
+        private static byte[] _ivByte = { 0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78 };
+
+        //Constructor
+        public  Encryption(string strKey)
+        {
+            Key = strKey;
+        }
 
         /// <summary>
         /// Encrypt a text string
         /// </summary>
         /// <param name="value">Plain text</param>
         /// <returns>Encrypted string</returns>
-        public string Encrypt(string value)
+        public static string Encrypt(string value)
         {
             return Encrypt(value, string.Empty);
         }
@@ -29,7 +35,7 @@ namespace Ndc.Library.EncryptDecrypt
         /// <param name="value">Plain text</param>
         /// <param name="key">Key string</param>
         /// <returns>Encrypted string</returns>
-        public string Encrypt(string value, string key)
+        public static string Encrypt(string value, string key)
         {
             return Encrypt(value, key, string.Empty);
         }
@@ -41,7 +47,7 @@ namespace Ndc.Library.EncryptDecrypt
         /// <param name="key">ZKey string</param>
         /// <param name="iv">Initialization vector</param>
         /// <returns>Encrypted string</returns>
-        public string Encrypt(string value, string key, string iv)
+        public static string Encrypt(string value, string key, string iv)
         {
             var encryptValue = string.Empty;
             MemoryStream ms = null;

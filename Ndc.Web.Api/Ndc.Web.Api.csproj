@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ndc.Library\Ndc.Library.csproj" />
+    <ProjectReference Include="..\Ndc.Models\Ndc.Models.csproj" />
   </ItemGroup>
 
 </Project>

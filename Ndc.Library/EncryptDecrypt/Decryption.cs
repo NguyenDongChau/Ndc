@@ -7,18 +7,23 @@ namespace Ndc.Library.EncryptDecrypt
 {
     public class Decryption
     {
-        private byte[] _keyByte = { };
-        //Default Key
-        private static readonly string Key = "Pass@123#";
+        private static byte[] _keyByte = { };
+        //Default Key string    
+        private static string Key;
         //Default initial vector
-        private byte[] _ivByte = { 0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78 };
+        private static byte[] _ivByte = { 0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78 };
+
+        public Decryption(string strKey)
+        {
+            Key = strKey;
+        }
 
         /// <summary> 
         /// Decrypt a text string
         /// </summary> 
         /// <param name="value">Encrypted text</param> 
         /// <returns>Plain text</returns> 
-        public string Decrypt(string value)
+        public static string Decrypt(string value)
         {
             return Decrypt(value, string.Empty);
         }
@@ -29,7 +34,7 @@ namespace Ndc.Library.EncryptDecrypt
         /// <param name="value">Encrypted text</param> 
         /// <param name="key">Key string</param> 
         /// <returns>Plain text</returns> 
-        public string Decrypt(string value, string key)
+        public static string Decrypt(string value, string key)
         {
             return Decrypt(value, key, string.Empty);
         }
@@ -41,7 +46,7 @@ namespace Ndc.Library.EncryptDecrypt
         /// <param name="key">Key string</param> 
         /// <param name="iv">Initialization vector</param> 
         /// <returns>Plain text</returns> 
-        public string Decrypt(string value, string key, string iv)
+        public static string Decrypt(string value, string key, string iv)
         {
             var decrptValue = string.Empty;
             if (string.IsNullOrEmpty(value)) return decrptValue;
@@ -62,7 +67,7 @@ namespace Ndc.Library.EncryptDecrypt
                 }
                 else
                 {
-                    _keyByte = Encoding.UTF8.GetBytes(Key);
+                    _keyByte = Encoding.UTF8.GetBytes(key);
                 }
                 using (var des = new DESCryptoServiceProvider())
                 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ndc.Library.Models;
+using Ndc.Models.Account;
 
 namespace Ndc.Web.Api.Models
 {
